@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by wenyou on 2016/10/28.
+ * @author liyi
  */
 @Configuration
 @AutoConfigureAfter(MybatisAutoConfiguration.class)
-public class EndpointConfiguration {
+public class MybatisEndpointConfiguration {
     @Bean
     public MybatisEndpoint mybatisEndpoint(MybatisProperties mybatisProperties, SqlSessionFactory sqlSessionFactory) {
         return new MybatisEndpoint(mybatisProperties, sqlSessionFactory);
