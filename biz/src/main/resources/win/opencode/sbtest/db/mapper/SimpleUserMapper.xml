@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="win.opencode.sbtest.db.mapper.SimpleUserMapper">
+    <resultMap id="SimpleUserMapperDOMap" type="win.opencode.sbtest.db.dataobject.SimpleUserDO">
+        <result column="id" property="id"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+    </resultMap>
+
+    <insert
+            id="insert"
+            parameterType="win.opencode.sbtest.db.dataobject.SimpleUserDO">
+        INSERT INTO simple_user (
+        gmt_create,
+        gmt_modified,
+        name,
+        age
+        ) VALUES (
+        now(),
+        now(),
+        #{name},
+        #{age}
+        )
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update
+            id="updateById"
+            parameterType="win.opencode.sbtest.db.dataobject.SimpleUserDO">
+        UPDATE simple_user
+        SET gmt_modified = now()
+        <if test="name != null">
+            , name = #{name}
+        </if>
+        <if test="age != null">
+            , age = #{age}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select
+            id="selectPaginationByDO"
+            parameterType="win.opencode.sbtest.core.db.PageQuery"
+            resultMap="SimpleUserMapperDOMap">
+        SELECT *
+        FROM simple_user
+        WHERE 1 = 1
+        <if test="obj.id != null">
+            AND id = #{obj.id}
+        </if>
+        <if test="obj.name != null">
+            <bind name="pattern" value="'%' + obj.name + '%'"/>
+            AND name like #{pattern}
+        </if>
+        <if test="obj.age != null">
+            AND age = #{obj.age}
+        </if>
+    </select>
+
+    <select
+            id="selectCountByDO"
+            parameterType="win.opencode.sbtest.db.dataobject.SimpleUserDO"
+            resultType="java.lang.Long">
+        SELECT count(1)
+        FROM simple_user
+        WHERE 1 = 1
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="name != null">
+            <bind name="pattern" value="'%' + name + '%'"/>
+            AND name like #{pattern}
+        </if>
+        <if test="age != null">
+            AND age = #{age}
+        </if>
+    </select>
+
+    <!-- 以下为自定义方法 -->
+</mapper>
