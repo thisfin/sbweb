@@ -2,7 +2,9 @@ package win.opencode.sbtest.core.db;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -24,6 +26,20 @@ public class BaseDAO<DOT extends BaseDO, MapT extends BaseMapper<DOT>> {
     public Long updateById(DOT doT)
             throws DBException {
         return this.mapper.updateById(doT);
+    }
+
+    // 根据主键查询
+    public DOT selectById(Long id)
+            throws DBException, IllegalAccessException, InstantiationException {
+        DOT doT = ((Class<DOT>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0]).newInstance();
+        doT.setId(id);
+        PageQuery<DOT> pageQuery = new PageQuery();
+        pageQuery.setObj(doT);
+        List<DOT> list = this.mapper.selectPaginationByDO(pageQuery);
+        if (!CollectionUtils.isEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
     }
 
     // 根据do查询
