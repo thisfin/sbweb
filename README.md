@@ -1,7 +1,7 @@
 # sbweb
-Java Spring-Boot Demo
+Java Spring-Boot Demo Framework
 
 # 功能点
-* mybatis 泛型dao
-* mybatis endpoint
-* mybatis 切面错误捕捉
+* mybatis generic dao
+* mybatis sql endpoint
+* mybatis pointcut catch exception
