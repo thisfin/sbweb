@@ -11,3 +11,6 @@ Java Spring-Boot Demo Framework
 * mybatis generic dao
 * mybatis sql endpoint
 * mybatis pointcut catch exception
+
+# TODO
+* 去掉双花括号赋值, 匿名内部类赋值的方式对第三发jar的兼容性不高, 例如: gson, mtop
